@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Rota — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5" id="notFoundSection" style="display:none;">
+  <div class="container">
+    <div class="alert alert-danger" style="max-width:560px;" data-i18n="rota.view.notFound">We couldn't find this rota. The link may be incomplete.</div>
+    <a href="rota.html" data-i18n="nav.rota">Cook & Book</a>
+  </div>
+</section>
+
+<section class="py-5" id="lockedSection" style="display:none;">
+  <div class="container">
+    <div class="card p-4 p-lg-5" style="max-width:480px;">
+      <h1 class="h4 fw-bold text-teal" data-i18n="rota.view.locked.title">This is a private rota</h1>
+      <p class="text-muted" data-i18n="rota.view.locked.body">Enter the access code you were given to view it.</p>
+      <form id="unlock-form">
+        <label for="unlockCode" class="form-label fw-bold small" data-i18n="rota.view.locked.codeLabel">Access code</label>
+        <input type="text" class="form-control text-uppercase mb-2" id="unlockCode" maxlength="6" required>
+        <div id="unlock-error" class="text-danger small mb-2" style="display:none;" data-i18n="rota.view.locked.error"></div>
+        <button type="submit" class="btn btn-coral" data-i18n="rota.view.locked.submit">Unlock</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="rotaContent" style="display:none;">
+<section class="hero-gradient text-white py-5">
+  <div class="hero-texture"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-skyline"></div>
+  <div class="container py-4">
+    <span class="badge bg-light text-dark mb-2" id="occasionBadge"></span>
+    <h1 class="display-6 fw-bold" id="recipientHeading" style="max-width:720px;"></h1>
+    <p class="lead" style="max-width:680px;color:#dcece5;" id="storyText"></p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card p-4 mb-4">
+          <h2 class="h6 story-label mb-2" data-i18n="rota.view.detailsTitle">Details</h2>
+          <p class="mb-1"><strong data-i18n="rota.view.dietary">Dietary needs</strong>: <span id="dietaryOut"></span></p>
+          <p class="mb-1"><strong data-i18n="rota.view.address">Delivery address</strong>: <span id="addressOut"></span></p>
+          <p class="mb-0"><strong data-i18n="rota.view.organizer">Organised by</strong>: <span id="organizerOut"></span></p>
+        </div>
+
+        <div class="card p-4">
+          <h2 class="h6 story-label mb-2" data-i18n="rota.view.shareAgain">Share this rota again</h2>
+          <label class="form-label small fw-bold" data-i18n="rota.success.linkLabel">Private link</label>
+          <div class="input-group input-group-sm mb-2">
+            <input type="text" class="form-control" id="rotaLinkOut" readonly>
+            <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn" data-i18n="rota.success.copy">Copy</button>
+          </div>
+          <label class="form-label small fw-bold" data-i18n="rota.success.codeLabel">Access code</label>
+          <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control fw-bold" id="rotaCodeOut" readonly style="letter-spacing:.15em;">
+            <button class="btn btn-outline-secondary" type="button" id="copyCodeBtn" data-i18n="rota.success.copy">Copy</button>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-secondary btn-sm" id="whatsappShareBtn" target="_blank" rel="noopener" data-i18n="rota.success.shareWhatsapp">WhatsApp</a>
+            <a class="btn btn-outline-secondary btn-sm" id="emailShareBtn" data-i18n="rota.success.shareEmail">Email</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card p-4 mb-4">
+          <h2 class="h5 text-teal" data-i18n="rota.view.rotaTitle">The rota</h2>
+          <p class="text-muted small" data-i18n="rota.view.rotaSub">Pick an open date to sign up — add what you're planning to cook and roughly when you'll deliver it.</p>
+          <div id="rota-days" aria-live="polite"></div>
+        </div>
+
+        <div class="card p-4">
+          <h2 class="h5 text-teal" data-i18n="rota.view.chatTitle">Chat with the group</h2>
+          <p class="text-muted small" data-i18n="rota.view.chatSub">A private space for the group to coordinate — swap ideas, ask about dishes, sort out serving containers.</p>
+          <div class="chat-thread mb-3" id="chat-thread" aria-live="polite"></div>
+          <form id="chat-form" class="row g-2">
+            <div class="col-12 col-sm-4">
+              <label for="chatName" class="visually-hidden" data-i18n="rota.view.chatName">Your name</label>
+              <input type="text" class="form-control" id="chatName" required data-i18n-placeholder="rota.view.chatName" placeholder="Your name">
+            </div>
+            <div class="col-12 col-sm-6">
+              <label for="chatMessage" class="visually-hidden" data-i18n="rota.view.chatMessage">Message</label>
+              <input type="text" class="form-control" id="chatMessage" required data-i18n-placeholder="rota.view.chatMessage" placeholder="Message">
+            </div>
+            <div class="col-12 col-sm-2">
+              <button type="submit" class="btn btn-teal w-100" data-i18n="rota.view.chatSend">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<!-- Sign-up modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="signup-form">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalDate"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="signupDate">
+          <div class="mb-3">
+            <label for="signupName" class="form-label fw-bold" data-i18n="rota.view.signupName">Your name</label>
+            <input type="text" class="form-control" id="signupName" required>
+          </div>
+          <div class="mb-3">
+            <label for="signupMeal" class="form-label fw-bold" data-i18n="rota.view.signupMeal">What are you planning to cook?</label>
+            <input type="text" class="form-control" id="signupMeal">
+          </div>
+          <div class="mb-3">
+            <label for="signupTime" class="form-label fw-bold" data-i18n="rota.view.signupTime">Approximate delivery time</label>
+            <input type="text" class="form-control" id="signupTime" placeholder="e.g. around 6pm">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-i18n="rota.view.cancel">Cancel</button>
+          <button type="submit" class="btn btn-coral" data-i18n="rota.view.signupSubmit">Confirm this date</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("rota.html");
+
+const params = new URLSearchParams(window.location.search);
+const rotaId = params.get("id");
+const rota = rotaId ? CCM.findRota(rotaId) : null;
+
+if (!rota) {
+  document.getElementById("notFoundSection").style.display = "block";
+} else {
+  const sessionKey = "ccm_rota_unlocked_" + rota.id;
+  const queryCode = params.get("code");
+  const alreadyUnlocked = sessionStorage.getItem(sessionKey) === "1";
+
+  if (alreadyUnlocked || (queryCode && CCM.checkRotaCode(rota.id, queryCode))) {
+    sessionStorage.setItem(sessionKey, "1");
+    unlock();
+  } else {
+    document.getElementById("lockedSection").style.display = "block";
+    document.getElementById("unlock-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const code = document.getElementById("unlockCode").value;
+      if (CCM.checkRotaCode(rota.id, code)) {
+        sessionStorage.setItem(sessionKey, "1");
+        document.getElementById("lockedSection").style.display = "none";
+        unlock();
+      } else {
+        document.getElementById("unlock-error").style.display = "block";
+      }
+    });
+  }
+}
+
+function unlock() {
+  document.getElementById("rotaContent").style.display = "block";
+  renderShowcase();
+  renderShareLinks();
+  renderRotaDays();
+  renderChat();
+  document.addEventListener("ccm:langchange", () => { renderShowcase(); renderRotaDays(); renderChat(); });
+}
+
+function renderShowcase() {
+  document.getElementById("occasionBadge").textContent = CCM.occasionLabel(rota.occasion);
+  document.getElementById("recipientHeading").textContent = rota.recipientName;
+  document.getElementById("storyText").textContent = rota.story;
+  document.getElementById("dietaryOut").textContent = rota.dietary;
+  document.getElementById("addressOut").textContent = rota.address;
+  document.getElementById("organizerOut").textContent = rota.organizerName;
+}
+
+function renderShareLinks() {
+  const link = window.location.href.split("?")[0] + `?id=${rota.id}`;
+  document.getElementById("rotaLinkOut").value = link;
+  document.getElementById("rotaCodeOut").value = rota.accessCode;
+  const shareText = `You're invited to join a private cooking rota for ${rota.recipientName} on Cardiff Community Meals.\n\nLink: ${link}\nAccess code: ${rota.accessCode}`;
+  document.getElementById("whatsappShareBtn").href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+  document.getElementById("emailShareBtn").href = `mailto:?subject=${encodeURIComponent("Cooking rota for " + rota.recipientName)}&body=${encodeURIComponent(shareText)}`;
+  document.getElementById("copyLinkBtn").addEventListener("click", () => copyField("rotaLinkOut", "copyLinkBtn"));
+  document.getElementById("copyCodeBtn").addEventListener("click", () => copyField("rotaCodeOut", "copyCodeBtn"));
+}
+
+function copyField(inputId, btnId) {
+  const input = document.getElementById(inputId);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  const btn = document.getElementById(btnId);
+  const done = () => { btn.textContent = I18N.t("rota.success.copied"); setTimeout(() => { btn.textContent = I18N.t("rota.success.copy"); }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(input.value).then(done).catch(() => { document.execCommand("copy"); done(); });
+  } else {
+    document.execCommand("copy");
+    done();
+  }
+}
+
+function renderRotaDays() {
+  const dates = CCM.rotaDates(rota);
+  const signups = CCM.getRotaSignups().filter(s => s.rotaId === rota.id);
+  const container = document.getElementById("rota-days");
+  container.innerHTML = dates.map(date => {
+    const signup = signups.find(s => s.date === date);
+    if (signup) {
+      return `<div class="rota-day filled">
+        <span class="rota-date">${CCM.fmtDayDate(date)}</span>
+        <span>${I18N.t("rota.view.signedUpBy")} <strong>${signup.cookName}</strong>${signup.meal ? " — " + signup.meal : ""}${signup.time ? " · " + signup.time : ""}</span>
+        <button class="btn btn-outline-secondary btn-sm" onclick="releaseDate('${signup.id}')">${I18N.t("rota.view.release")}</button>
+      </div>`;
+    }
+    return `<div class="rota-day">
+      <span class="rota-date">${CCM.fmtDayDate(date)}</span>
+      <span class="text-muted small">${I18N.t("rota.view.open")}</span>
+      <button class="btn btn-teal btn-sm" onclick="openSignup('${date}')">${I18N.t("rota.view.signUpBtn")}</button>
+    </div>`;
+  }).join("");
+}
+
+function openSignup(date) {
+  document.getElementById("signupDate").value = date;
+  document.getElementById("signupModalDate").textContent = CCM.fmtDayDate(date);
+  document.getElementById("signup-form").reset();
+  document.getElementById("signupDate").value = date;
+  new bootstrap.Modal(document.getElementById("signupModal")).show();
+}
+
+function releaseDate(signupId) {
+  CCM.releaseRotaSignup(signupId);
+  renderRotaDays();
+}
+
+document.getElementById("signup-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  CCM.addRotaSignup({
+    rotaId: rota.id,
+    date: document.getElementById("signupDate").value,
+    cookName: document.getElementById("signupName").value.trim(),
+    meal: document.getElementById("signupMeal").value.trim(),
+    time: document.getElementById("signupTime").value.trim(),
+  });
+  bootstrap.Modal.getInstance(document.getElementById("signupModal")).hide();
+  renderRotaDays();
+});
+
+function renderChat() {
+  const messages = CCM.getRotaMessages().filter(m => m.rotaId === rota.id);
+  const thread = document.getElementById("chat-thread");
+  thread.innerHTML = messages.length
+    ? messages.map(m => `<div class="chat-bubble"><span class="chat-meta">${m.authorName} · ${CCM.fmtDate(m.createdAt)}</span>${m.message}</div>`).join("")
+    : `<p class="empty-state">${I18N.t("rota.view.chatEmpty")}</p>`;
+  thread.scrollTop = thread.scrollHeight;
+}
+
+document.getElementById("chat-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  CCM.addRotaMessage({
+    rotaId: rota.id,
+    authorName: document.getElementById("chatName").value.trim(),
+    message: document.getElementById("chatMessage").value.trim(),
+  });
+  document.getElementById("chatMessage").value = "";
+  renderChat();
+});
+</script>
+</body>
+</html>

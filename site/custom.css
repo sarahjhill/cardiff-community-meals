@@ -1,0 +1,475 @@
+/* Cardiff Community Meals — brand + design system on top of Bootstrap 5
+   Palette: deep Welsh green + dragon red on warm parchment — drawn from
+   Y Ddraig Goch (the Welsh flag) rather than a generic corporate blue,
+   because this is a Cardiff-first, Welsh-first service. Fraunces (a warm,
+   characterful serif) carries headlines and brand moments; Inter carries
+   everything functional (forms, tables, buttons) for accessibility.
+   Class names below (bg-teal, btn-teal, text-teal, btn-coral, etc.) are
+   kept from earlier builds for compatibility — only the colour values and
+   typography changed, so no HTML had to be touched to re-skin the site. */
+:root {
+  --brand-teal: #0d5c37;        /* primary — deep Welsh green, softened a touch from pure vivid green */
+  --brand-teal-mid: #14704a;    /* mid green, gradients */
+  --brand-teal-dark: #063222;   /* darkest green — footer, hovers */
+  --brand-teal-light: #e6f0ea;  /* pale green tint — chips, step circles */
+  --brand-coral: #b3475a;       /* muted dragon red — decorative / icons / large text only, toned down from a neon red */
+  --brand-coral-deep: #a3273c;  /* muted brick-red, WCAG AA-safe with white text on buttons, easier on the eyes than pure flag-red */
+  --brand-coral-dark: #7a1d2c;
+  --brand-gold-text: #8a6300;   /* accessible daffodil-gold for stars/tier text */
+  --brand-cream: #f4efe2;       /* warm parchment, slightly deeper than before to cut glare */
+  --brand-ink: #262b23;         /* warm near-black */
+  --brand-border: #e2dac9;
+  --radius: .85rem;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", "Segoe UI", Verdana, Arial, sans-serif;
+}
+
+* { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--brand-cream);
+  color: var(--brand-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.display-6 { font-weight: 800; letter-spacing: -0.01em; }
+.navbar-brand .fs-5 { font-family: var(--font-display); font-weight: 700; }
+
+a { color: var(--brand-teal); }
+a:hover { color: var(--brand-teal-dark); }
+
+/* ---------- Accessibility: skip link, focus, motion ---------- */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  z-index: 2000;
+  background: var(--brand-teal);
+  color: #fff;
+  padding: .75rem 1.25rem;
+  border-radius: 0 0 .5rem 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+  top: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.lang-btn:focus-visible {
+  outline: 3px solid var(--brand-coral-deep);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+
+/* ---------- Layout helpers ---------- */
+.bg-teal { background-color: var(--brand-teal) !important; }
+.bg-teal-dark { background-color: var(--brand-teal-dark) !important; }
+.bg-teal-light { background-color: var(--brand-teal-light) !important; }
+.text-teal { color: var(--brand-teal) !important; }
+
+.eyebrow {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--brand-coral-deep);
+  margin-bottom: .5rem;
+}
+
+/* A permanent, always-bilingual badge of identity — doesn't switch with
+   the language toggle, because "Welsh first, open to all" is a constant,
+   not a setting. Solid dragon red so it pops against the green hero —
+   the flag's two colours, deliberately, side by side. */
+.pride-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--brand-coral-deep);
+  border: 1px solid var(--brand-coral-deep);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: .4rem .9rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+.pride-badge .divider { opacity: .65; }
+
+/* A slim red ribbon above the navbar on every page — Y Ddraig Goch red,
+   present site-wide, not just tucked into buttons. */
+.cy-ribbon {
+  background: var(--brand-coral-deep);
+  color: #fff;
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .4rem .75rem;
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, var(--brand-teal) 0%, var(--brand-teal-mid) 55%, var(--brand-teal-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 82% 15%, rgba(255,255,255,0.08), transparent 45%),
+    radial-gradient(circle at 8% 92%, rgba(255,255,255,0.05), transparent 40%);
+  pointer-events: none;
+}
+.hero-gradient::after {
+  /* a quiet nod to Y Ddraig Goch along the hero's base — colour only, no mascot */
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--brand-coral-deep) 0%, var(--brand-coral-deep) 50%, #fff 50%, #fff 100%);
+  opacity: .75;
+}
+.hero-gradient .container { position: relative; z-index: 1; }
+
+/* Soft, blurred colour blobs for visual depth behind hero content — no
+   images to break, no mascots, just quiet organic shapes at low opacity
+   so they add life without adding glare. */
+.hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-blob-1 { width: 380px; height: 380px; top: -140px; right: -60px; background: var(--brand-coral-deep); opacity: .25; }
+.hero-blob-2 { width: 320px; height: 320px; bottom: -160px; left: 6%; background: #ffffff; opacity: .08; }
+.hero-blob-3 { width: 220px; height: 220px; top: 40%; left: 42%; background: var(--brand-gold-text); opacity: .1; }
+
+/* A faint dotted texture running through the hero, for a bit of tactile
+   grain instead of one flat block of colour. */
+.hero-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .5;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,0));
+}
+
+.hero-skyline {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: clamp(64px, 11vw, 130px);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-skyline svg { display: block; }
+
+.hero-areas-strip {
+  color: rgba(255,255,255,0.65);
+  font-size: .82rem;
+  letter-spacing: .02em;
+}
+
+/* Floating "live" stat card on the homepage hero */
+.hero-stat-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.1rem;
+  padding: 1.6rem 1.5rem;
+}
+.hero-stat-card .stat-num { color: #fff; font-size: 1.85rem; }
+.hero-stat-card .hero-stat-label { color: rgba(255,255,255,0.72); font-size: .76rem; }
+.hero-live-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #8fe3ac;
+  margin-right: .45rem;
+  box-shadow: 0 0 0 0 rgba(143,227,172,.6);
+  animation: ccmPulse 2.2s infinite;
+}
+@keyframes ccmPulse {
+  0% { box-shadow: 0 0 0 0 rgba(143,227,172,.55); }
+  70% { box-shadow: 0 0 0 9px rgba(143,227,172,0); }
+  100% { box-shadow: 0 0 0 0 rgba(143,227,172,0); }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  border-radius: .6rem;
+  font-weight: 600;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .15s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn:hover { box-shadow: 0 6px 16px rgba(20, 40, 70, 0.12); }
+
+.btn-teal { background-color: var(--brand-teal); border-color: var(--brand-teal); color: #fff; }
+.btn-teal:hover, .btn-teal:focus { background-color: var(--brand-teal-dark); border-color: var(--brand-teal-dark); color: #fff; }
+
+.btn-coral { background-color: var(--brand-coral-deep); border-color: var(--brand-coral-deep); color: #fff; }
+.btn-coral:hover, .btn-coral:focus { background-color: var(--brand-coral-dark); border-color: var(--brand-coral-dark); color: #fff; }
+
+.btn-outline-cream { color: #fff; border-color: rgba(255,255,255,0.65); }
+.btn-outline-cream:hover { background-color: rgba(255,255,255,0.14); color: #fff; }
+
+.btn-outline-teal { color: var(--brand-teal); border-color: var(--brand-teal); background-color: transparent; }
+.btn-outline-teal:hover, .btn-outline-teal:focus { background-color: var(--brand-teal); color: #fff; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+  padding-top: .65rem;
+  padding-bottom: .65rem;
+  box-shadow: 0 2px 14px rgba(10, 30, 20, 0.2);
+}
+.navbar-brand small { font-weight: 400; }
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background-color: var(--brand-coral-deep);
+  flex-shrink: 0;
+}
+.brand-logo svg { display: block; }
+
+.navbar .navbar-nav .nav-link {
+  padding: .55rem 1rem;
+  border-radius: .4rem;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  transition: background-color .12s ease, color .12s ease;
+}
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link:focus {
+  color: #fff;
+  background-color: rgba(255,255,255,0.12);
+}
+.navbar .navbar-nav .nav-link.active {
+  color: #fff;
+  font-weight: 700;
+  background-color: rgba(255,255,255,0.18);
+}
+.navbar-toggler { border-color: rgba(255,255,255,0.4); }
+.navbar-toggler:focus { box-shadow: 0 0 0 .2rem rgba(255,255,255,0.25); }
+
+.dropdown-menu {
+  border-radius: .6rem;
+  border-color: var(--brand-border);
+  box-shadow: 0 10px 28px rgba(16,24,40,0.16);
+  padding: .4rem;
+}
+.dropdown-item { border-radius: .4rem; padding: .5rem .75rem; }
+.dropdown-item:hover, .dropdown-item:focus { background-color: var(--brand-teal-light); color: var(--brand-teal); }
+.dropdown-item.active { background-color: var(--brand-teal-light); color: var(--brand-teal); font-weight: 700; }
+
+/* Language toggle — flag icons rather than text, since the flags carry
+   their own recognition (and their own colour) better than "EN"/"CY"
+   ever could. Active state shown as a bright ring rather than a solid
+   background swap, so both flags keep their real colours at all times. */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-left: .6rem;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  padding: 2px;
+  line-height: 0;
+  border-radius: .3rem;
+  cursor: pointer;
+  opacity: .62;
+  transition: opacity .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+.lang-btn svg { display: block; border-radius: .25rem; }
+.lang-btn:hover { opacity: .9; transform: translateY(-1px); }
+.lang-btn.active {
+  opacity: 1;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.9);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 2px 8px rgba(16,24,40,0.05);
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.card.lift:hover, a.card.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(16,24,40,0.12);
+}
+
+.step-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--brand-teal-light); color: var(--brand-teal);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; margin-bottom: 12px;
+}
+
+.stat-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--brand-teal); letter-spacing: -0.01em; }
+
+.progress { background-color: #f0ece0; border-radius: 999px; }
+.progress-bar-coral { background-color: var(--brand-coral-deep) !important; }
+
+.badge-tier-gold { background-color: #fdf1d6; color: var(--brand-gold-text); }
+.badge-tier-silver { background-color: #eceff3; color: #4a5568; }
+.badge-tier-bronze { background-color: #f7e6d8; color: #935a26; }
+
+.stars { color: var(--brand-gold-text); letter-spacing: 1px; }
+
+/* ---------- Story feature cards ---------- */
+.story-card {
+  border-radius: 1.1rem;
+  overflow: hidden;
+}
+.story-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.story-quote {
+  position: relative;
+  border-left: 4px solid var(--brand-coral-deep);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--brand-ink);
+}
+.story-quote::before {
+  content: "";
+  position: absolute;
+  left: .1rem;
+  top: -1.15rem;
+  width: 34px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 106 48'%3E%3Cpath fill='%23a3273c' d='M0 30 C0 10 12 0 26 0 L26 12 C16 12 12 18 12 26 L26 26 L26 48 L0 48 Z M40 30 C40 10 52 0 66 0 L66 12 C56 12 52 18 52 26 L66 26 L66 48 L40 48 Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: .55;
+  pointer-events: none;
+}
+.story-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--brand-teal-mid);
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.reveal.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Forms ---------- */
+.form-control, .form-select {
+  border-radius: .5rem;
+  border-color: var(--brand-border);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--brand-teal-mid);
+  box-shadow: 0 0 0 .2rem rgba(0, 110, 51, 0.15);
+}
+
+.form-note {
+  background: var(--brand-teal-light);
+  border-left: 4px solid var(--brand-teal);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  color: var(--brand-teal-dark);
+}
+
+footer a { color: #fff; }
+footer { background-color: var(--brand-teal-dark); color: #bcd8c6; }
+
+/* ---------- Cook & Book: rota + chat ---------- */
+.rota-day {
+  border: 1px solid var(--brand-border);
+  border-radius: .6rem;
+  padding: .85rem 1rem;
+  margin-bottom: .6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.rota-day.filled { background: var(--brand-teal-light); }
+.rota-day .rota-date { font-weight: 700; color: var(--brand-teal); min-width: 130px; }
+
+.chat-thread { max-height: 360px; overflow-y: auto; padding-right: .25rem; }
+.chat-bubble {
+  background: var(--brand-teal-light);
+  border-radius: .75rem;
+  padding: .55rem .9rem;
+  margin-bottom: .55rem;
+}
+.chat-bubble .chat-meta { font-size: .72rem; color: var(--brand-teal-mid); font-weight: 700; margin-bottom: .1rem; display: block; }
+
+.code-badge {
+  font-family: var(--font-body), monospace;
+  letter-spacing: .2em;
+  font-weight: 800;
+  background: var(--brand-teal-light);
+  color: var(--brand-teal);
+  padding: .3rem .7rem;
+  border-radius: .4rem;
+}
+
+/* ---------- Values / community-benefit section ---------- */
+.benefit-card {
+  border-left: 4px solid var(--brand-coral-deep);
+}
+.benefit-icon {
+  width: 52px;
+  height: 40px;
+  margin-bottom: .75rem;
+}
+.welsh-word {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--brand-coral-deep);
+}
+
+.empty-state { color: #6c757d; font-style: italic; }

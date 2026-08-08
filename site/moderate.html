@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Moderation Queue — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="moderate.title">Moderation queue (demo)</h1>
+    <p class="text-muted mb-4" style="max-width:720px;" data-i18n="moderate.intro">This page stands in for the human review step described throughout the site. In a real deployment it would sit behind admin sign-in, not a public link — here, it's left open so you can see moderation actually happening rather than take our word for it.</p>
+
+    <h2 class="h5 text-teal mb-3" data-i18n="moderate.pending.title">Awaiting review</h2>
+    <div class="row g-3 mb-5" id="pending-list"></div>
+
+    <h2 class="h5 text-teal mb-3" data-i18n="moderate.reviewed.title">Already reviewed</h2>
+    <div class="row g-3" id="reviewed-list"></div>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("moderate.html");
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
+function whoLine(c) {
+  const who = c.name ? c.name : I18N.t("voices.wall.anonymous");
+  const where = c.area ? `, ${c.area}` : "";
+  return `${escapeHtml(who)}${escapeHtml(where)}`;
+}
+
+function renderPending() {
+  const list = document.getElementById("pending-list");
+  const items = CCM.pendingComments();
+  if (!items.length) {
+    list.innerHTML = `<p class="empty-state">${I18N.t("moderate.pending.empty")}</p>`;
+    return;
+  }
+  list.innerHTML = items.map(c => `<div class="col-md-6 reveal"><div class="card lift h-100"><div class="card-body">
+      <p class="text-muted small mb-1">${I18N.t("moderate.by")}: <strong>${whoLine(c)}</strong> · ${I18N.t("moderate.postedOn")} ${CCM.fmtDate(c.createdAt)}</p>
+      <p class="card-text">${escapeHtml(c.message)}</p>
+      <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-teal btn-sm" data-approve="${c.id}">${I18N.t("moderate.approve")}</button>
+        <button class="btn btn-outline-teal btn-sm" data-reject="${c.id}">${I18N.t("moderate.reject")}</button>
+      </div>
+    </div></div></div>`).join("");
+}
+
+function renderReviewed() {
+  const list = document.getElementById("reviewed-list");
+  const items = CCM.reviewedComments();
+  if (!items.length) {
+    list.innerHTML = `<p class="empty-state">${I18N.t("moderate.reviewed.empty")}</p>`;
+    return;
+  }
+  list.innerHTML = items.map(c => {
+    const statusKey = c.status === "approved" ? "moderate.status.approved" : "moderate.status.rejected";
+    const badgeCls = c.status === "approved" ? "badge-tier-gold" : "badge-tier-bronze";
+    return `<div class="col-md-6 reveal"><div class="card h-100"><div class="card-body">
+      <span class="badge ${badgeCls} mb-2">${I18N.t(statusKey)}</span>
+      <p class="text-muted small mb-1">${I18N.t("moderate.by")}: <strong>${whoLine(c)}</strong> · ${I18N.t("moderate.postedOn")} ${CCM.fmtDate(c.createdAt)}</p>
+      <p class="card-text">${escapeHtml(c.message)}</p>
+      <button class="btn btn-outline-teal btn-sm mt-2" data-undo="${c.id}">${I18N.t("moderate.undo")}</button>
+    </div></div></div>`;
+  }).join("");
+}
+
+function renderAll() {
+  renderPending();
+  renderReviewed();
+  CCM.initScrollReveal();
+}
+
+document.addEventListener("click", (e) => {
+  const approveId = e.target.getAttribute && e.target.getAttribute("data-approve");
+  const rejectId = e.target.getAttribute && e.target.getAttribute("data-reject");
+  const undoId = e.target.getAttribute && e.target.getAttribute("data-undo");
+  if (approveId) { CCM.approveComment(approveId); renderAll(); }
+  if (rejectId) { CCM.rejectComment(rejectId); renderAll(); }
+  if (undoId) { CCM.resetCommentToPending(undoId); renderAll(); }
+});
+
+renderAll();
+document.addEventListener("ccm:langchange", renderAll);
+</script>
+</body>
+</html>

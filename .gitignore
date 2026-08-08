@@ -1,0 +1,13 @@
+# OS / editor cruft
+.DS_Store
+.~lock.*
+
+# Intermediate conversion artifacts from generating the planning docs
+# (docx -> pdf -> jpg previews used only for our own visual QA)
+documentation/*.tmp
+documentation/*.jpg
+
+# Stale early draft of the site that was accidentally left behind inside
+# documentation/ before the project moved to documentation/../site/ — the
+# real, current site lives in /site.
+documentation/site/

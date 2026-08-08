@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stories — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="hero-gradient text-white py-5">
+  <div class="hero-texture"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-skyline"></div>
+  <div class="container py-4">
+    <span class="eyebrow" style="color:#ffd77a;" data-i18n="nav.stories">Stories</span>
+    <h1 class="display-6 fw-bold" style="max-width:760px;" data-i18n="stories.hero.title">The people behind the numbers</h1>
+    <p class="lead" style="max-width:700px;color:#dcece5;" data-i18n="stories.hero.lead">Every request on this platform represents someone going through a genuinely difficult time. With their consent, and using first names only, here's why they needed help, how the community responded, and how it felt to receive it.</p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container" id="stories-full"></div>
+</section>
+
+<section class="py-5 bg-white">
+  <div class="container text-center">
+    <h2 class="fw-bold text-teal" data-i18n="stories.cta.title">Every story here started with one request.</h2>
+    <p class="text-muted mx-auto mb-4" style="max-width:560px;" data-i18n="stories.cta.body">If you know someone in Cardiff who could use this kind of support, or you'd like to fund the next story, you can act right now.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a class="btn btn-coral btn-lg" href="request.html" data-i18n="stories.cta.request">Request help for someone</a>
+      <a class="btn btn-teal btn-lg" href="donate.html" data-i18n="stories.cta.donate">Donate a meal</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script src="stories-data.js"></script>
+<script>
+CCM.renderChrome("stories.html");
+
+function renderStories() {
+  document.getElementById("stories-full").innerHTML = STORIES.map((s, i) => {
+    const t = ccmStory(s);
+    const reversed = i % 2 === 1;
+    return `<article id="${s.id}" class="card story-card lift reveal mb-4" style="scroll-margin-top:90px;">
+      <div class="row g-0">
+        <div class="col-lg-4 d-flex align-items-center justify-content-center p-4" style="background:${s.color};">
+          <div class="text-center text-white">
+            <div class="story-avatar mx-auto mb-3" style="background-color:rgba(255,255,255,0.18);font-size:2rem;width:88px;height:88px;">${s.initial}</div>
+            <h2 class="h4 mb-1">${s.name}</h2>
+            <p class="mb-0 text-white-75">${s.area}</p>
+            <span class="badge bg-light text-dark mt-2">${t.situation}</span>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card-body p-4 p-lg-5">
+            <p class="story-label mb-1">${I18N.t("stories.needTitle")}</p>
+            <p>${t.need}</p>
+            <p class="story-label mb-1 mt-3">${I18N.t("stories.helpTitle")}</p>
+            <p>${t.help}</p>
+            <p class="story-label mb-1 mt-3">${I18N.t("stories.feelTitle")}</p>
+            <blockquote class="story-quote mb-0">
+              <p class="mb-1">&ldquo;${t.quote}&rdquo;</p>
+              <footer class="text-muted small">— ${s.name}, ${s.area}</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  CCM.initScrollReveal();
+}
+
+renderStories();
+document.addEventListener("ccm:langchange", renderStories);
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate &amp; Book a Meal — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="donate.title">Donate &amp; book a meal</h1>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="donate.sub">Every request below has already been checked. Names are first-name only — that's deliberate, to protect the people we're helping.</p>
+    <div class="row g-4" id="request-list"></div>
+  </div>
+</section>
+
+<section class="py-5 bg-white" id="booking-section" style="display:none;">
+  <div class="container">
+    <h2 class="fw-bold text-teal"><span data-i18n="donate.bookFor">Book a meal for</span> <span id="booking-name"></span></h2>
+    <form class="card p-4" style="max-width:640px;" id="donate-form">
+      <input type="hidden" id="requestId">
+
+      <label class="form-label fw-bold" data-i18n="donate.howMany">How many meals would you like to fund?</label>
+      <div class="form-check"><input class="form-check-input" type="radio" name="mealCount" value="1" id="mc1" checked><label class="form-check-label" for="mc1" data-i18n="donate.tier1">1 meal — £7</label></div>
+      <div class="form-check"><input class="form-check-input" type="radio" name="mealCount" value="5" id="mc5"><label class="form-check-label" for="mc5" data-i18n="donate.tier5">5 meals (a working week) — £35</label></div>
+      <div class="form-check"><input class="form-check-input" type="radio" name="mealCount" value="10" id="mc10"><label class="form-check-label" for="mc10" data-i18n="donate.tier10">10 meals (two weeks) — £70</label></div>
+      <div class="form-check mb-2"><input class="form-check-input" type="radio" name="mealCount" value="custom" id="mcCustom"><label class="form-check-label" for="mcCustom" data-i18n="donate.custom">Custom amount</label></div>
+      <input type="number" class="form-control mb-3" id="customMeals" min="1" data-i18n-placeholder="donate.customPlaceholder" placeholder="Number of meals" style="max-width:200px;display:none;">
+
+      <div class="mb-3">
+        <label for="businessSelect" class="form-label fw-bold" data-i18n="donate.business">Which business should cook it?</label>
+        <select class="form-select" id="businessSelect"></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="donorName" class="form-label fw-bold" data-i18n="donate.yourName">Your name</label>
+        <div class="form-text mb-1" id="donorNameHint" data-i18n="donate.yourNameHint">Or leave blank to donate anonymously.</div>
+        <input type="text" class="form-control" id="donorName" aria-describedby="donorNameHint" placeholder="e.g. Sarah H.">
+      </div>
+
+      <div class="mb-3">
+        <label for="donorEmail" class="form-label fw-bold" data-i18n="donate.email">Email</label>
+        <div class="form-text mb-1" id="donorEmailHint" data-i18n="donate.emailHint">For your donation receipt.</div>
+        <input type="email" class="form-control" id="donorEmail" required aria-describedby="donorEmailHint" placeholder="you@example.com">
+      </div>
+
+      <div class="mb-3">
+        <label for="message" class="form-label fw-bold" data-i18n="donate.message">A short message (optional)</label>
+        <div class="form-text mb-1" id="messageHint" data-i18n="donate.messageHint">Delivered anonymously alongside the meal, if you'd like.</div>
+        <textarea class="form-control" id="message" aria-describedby="messageHint" placeholder="Wishing you well..."></textarea>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-coral" data-i18n="donate.submit">Donate (demo — no real payment)</button>
+        <button type="button" class="btn btn-outline-secondary" id="cancel-booking" data-i18n="donate.cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("donate.html");
+
+const statusBadgeClass = { open: "bg-danger-subtle text-danger-emphasis", funded: "bg-warning-subtle text-warning-emphasis", prepared: "bg-info-subtle text-info-emphasis", delivered: "bg-success-subtle text-success-emphasis" };
+
+function renderRequests() {
+  const requests = CCM.getRequests();
+  const donations = CCM.getDonations();
+  const businesses = CCM.getBusinesses();
+  const list = document.getElementById("request-list");
+
+  if (!requests.length) {
+    list.innerHTML = `<p class="empty-state">${I18N.t("donate.noRequests")}</p>`;
+    return;
+  }
+
+  list.innerHTML = requests.map(r => {
+    const funded = CCM.mealsFundedFor(r.id, donations);
+    const status = CCM.requestStatus(r, donations);
+    const pct = Math.min(100, Math.round((funded / r.mealsNeeded) * 100));
+    const linkedDonations = donations.filter(d => d.requestId === r.id);
+    const businessNames = [...new Set(linkedDonations.map(d => businesses.find(b => b.id === d.businessId)?.name).filter(Boolean))];
+    return `<div class="col-md-4 reveal"><div class="card lift h-100"><div class="card-body d-flex flex-column">
+      <span class="badge ${statusBadgeClass[status]} mb-2 align-self-start">${CCM.statusLabel(status)}</span>
+      <h3 class="h5 text-teal">${r.name}, ${r.area}</h3>
+      <p class="card-text">${CCM.situationLabel(r.situation)}</p>
+      <p class="text-muted small">${r.dietary} &middot; ${r.urgency}</p>
+      <div class="progress mb-2" style="height:10px;"><div class="progress-bar progress-bar-coral" style="width:${pct}%;"></div></div>
+      <p class="small">${funded} / ${r.mealsNeeded} ${I18N.t("donate.mealsFunded")}${businessNames.length ? " · " + businessNames.join(", ") : ""}</p>
+      <div class="mt-auto">
+      ${status === "open"
+        ? `<button class="btn btn-teal btn-sm" onclick="openBooking('${r.id}')">${I18N.t("donate.bookButton")}</button>`
+        : `<span class="empty-state small">${I18N.t("donate.fullyFunded")}</span>`}
+      </div>
+    </div></div></div>`;
+  }).join("");
+  CCM.initScrollReveal();
+}
+
+function renderBusinessOptions() {
+  const businesses = CCM.getBusinesses();
+  const select = document.getElementById("businessSelect");
+  select.innerHTML = `<option value="">${I18N.t("donate.businessMatch")}</option>` +
+    businesses.map(b => `<option value="${b.id}">${b.name} — ${b.cuisine}</option>`).join("");
+}
+
+function openBooking(requestId) {
+  const req = CCM.getRequests().find(r => r.id === requestId);
+  if (!req) return;
+  document.getElementById("booking-section").style.display = "block";
+  document.getElementById("booking-name").textContent = `${req.name}, ${req.area}`;
+  document.getElementById("requestId").value = requestId;
+  document.getElementById("booking-section").scrollIntoView({ behavior: "smooth" });
+}
+
+document.getElementById("cancel-booking").addEventListener("click", () => {
+  document.getElementById("booking-section").style.display = "none";
+});
+
+document.querySelectorAll('input[name="mealCount"]').forEach(el => {
+  el.addEventListener("change", () => {
+    document.getElementById("customMeals").style.display = document.getElementById("mcCustom").checked ? "block" : "none";
+  });
+});
+
+document.getElementById("donate-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const requestId = document.getElementById("requestId").value;
+  const chosen = document.querySelector('input[name="mealCount"]:checked').value;
+  const mealCount = chosen === "custom" ? Number(document.getElementById("customMeals").value || 1) : Number(chosen);
+  const amount = mealCount * 7;
+  const businessId = document.getElementById("businessSelect").value || pickBusiness();
+
+  CCM.addDonation({
+    requestId,
+    donorName: document.getElementById("donorName").value.trim() || "Anonymous",
+    donorEmail: document.getElementById("donorEmail").value.trim(),
+    mealCount, amount, businessId,
+    message: document.getElementById("message").value.trim(),
+  });
+
+  document.getElementById("booking-section").style.display = "none";
+  renderRequests();
+  alert(`${CCM.fmtGBP(amount)} — ${mealCount} ${I18N.t("donate.mealsFunded")}. ${I18N.t("nav.track")}: track.html`);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+function pickBusiness() {
+  const businesses = CCM.getBusinesses();
+  return businesses.length ? businesses[Math.floor(Math.random() * businesses.length)].id : "";
+}
+
+function renderAll() { renderRequests(); renderBusinessOptions(); }
+renderAll();
+document.addEventListener("ccm:langchange", renderAll);
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Become a Business Partner — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="partner.title">Partner your business with us</h1>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="partner.sub">Cook and deliver meals for people in your community, get showcased publicly, and build recognition through our Bronze / Silver / Gold Community Kitchen badges.</p>
+
+    <div id="success-banner" aria-live="polite"></div>
+
+    <form class="card p-4" style="max-width:640px;" id="partner-form">
+      <div class="mb-3">
+        <label for="bizName" class="form-label fw-bold" data-i18n="partner.bizName">Business name</label>
+        <input type="text" class="form-control" id="bizName" required placeholder="e.g. Canton Curry House">
+      </div>
+
+      <div class="mb-3">
+        <label for="cuisine" class="form-label fw-bold" data-i18n="partner.cuisine">Cuisine / specialty</label>
+        <input type="text" class="form-control" id="cuisine" required placeholder="e.g. South Asian, bakery, Welsh comfort food">
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label fw-bold" data-i18n="partner.email">Contact email</label>
+        <input type="email" class="form-control" id="email" required placeholder="you@yourbusiness.co.uk">
+      </div>
+
+      <div class="mb-3">
+        <label for="hygiene" class="form-label fw-bold" data-i18n="partner.hygieneLabel">Food Standards Agency hygiene rating</label>
+        <select class="form-select" id="hygiene" required>
+          <option value="5">5 — Very good</option>
+          <option value="4">4 — Good</option>
+          <option value="3">3 — Generally satisfactory</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="delivery" class="form-label fw-bold" data-i18n="partner.deliveryLabel">Delivery capability</label>
+        <select class="form-select" id="delivery" required>
+          <option>Own drivers</option>
+          <option>Courier partner</option>
+          <option>Collection only</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="capacity" class="form-label fw-bold" data-i18n="partner.capacity">Typical weekly capacity (meals)</label>
+        <input type="number" class="form-control" id="capacity" min="1" placeholder="e.g. 20">
+      </div>
+
+      <button type="submit" class="btn btn-coral" data-i18n="partner.submit">Apply to partner</button>
+
+      <div class="form-note mt-3" data-i18n="partner.note">In production this application is reviewed by an admin, including verification of your current FSA hygiene rating, before your profile goes live. This demo approves instantly so you can see your profile appear on the Business Partners page.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("partner.html");
+
+document.getElementById("partner-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const biz = {
+    name: document.getElementById("bizName").value.trim(),
+    cuisine: document.getElementById("cuisine").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    hygiene: Number(document.getElementById("hygiene").value),
+    delivery: document.getElementById("delivery").value,
+    capacity: document.getElementById("capacity").value,
+  };
+  CCM.addBusiness(biz);
+  document.getElementById("success-banner").innerHTML = `
+    <div class="alert alert-success">
+      <strong>${I18N.t("partner.success")}</strong> ${biz.name} ${I18N.t("partner.successBody")}
+      <a href="businesses.html" data-i18n="nav.partners">${I18N.t("nav.partners")}</a>
+    </div>`;
+  e.target.reset();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

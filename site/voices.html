@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Voices — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="hero-gradient text-white py-5">
+  <div class="hero-texture"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-skyline"></div>
+  <div class="container py-4">
+    <span class="eyebrow" style="color:#ffd77a;" data-i18n="nav.voices">Community Voices</span>
+    <h1 class="display-6 fw-bold" style="max-width:700px;" data-i18n="voices.hero.title">Tell us what Cardiff means to you</h1>
+    <p class="lead" style="max-width:660px;color:#dcece5;" data-i18n="voices.hero.lead">Say thank you, share an idea, or just say hello — every message is read by a real person before it goes up, so this stays a safe, welcoming corner of the site.</p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5">
+        <h2 class="h4 text-teal mb-3" data-i18n="voices.form.title">Leave a message</h2>
+        <div id="success-banner" aria-live="polite"></div>
+        <form class="card p-4" id="voice-form" novalidate>
+          <div class="mb-3">
+            <label for="v-name" class="form-label fw-bold" data-i18n="voices.form.name">Your first name</label>
+            <div class="form-text mb-1" id="v-nameHint" data-i18n="voices.form.nameHint">Leave blank to post anonymously.</div>
+            <input type="text" class="form-control" id="v-name" aria-describedby="v-nameHint" placeholder="e.g. Bethan">
+          </div>
+          <div class="mb-3">
+            <label for="v-area" class="form-label fw-bold" data-i18n="voices.form.area">Your Cardiff area</label>
+            <select class="form-select" id="v-area"></select>
+          </div>
+          <div class="mb-3">
+            <label for="v-message" class="form-label fw-bold" data-i18n="voices.form.message">Your message</label>
+            <div class="form-text mb-1" id="v-messageHint" data-i18n="voices.form.messageHint">Keep it kind — this is a public space. 500 characters or fewer.</div>
+            <textarea class="form-control" id="v-message" required maxlength="500" rows="4" aria-describedby="v-messageHint"></textarea>
+          </div>
+          <button type="submit" class="btn btn-coral" data-i18n="voices.form.submit">Submit for review</button>
+          <div class="form-note mt-3" data-i18n="voices.form.note">Every message is checked by a real person before it's shown here — this genuinely waits for review. You can watch that review happen on the moderation page.</div>
+          <p class="mt-2 mb-0"><a href="moderate.html" data-i18n="voices.moderateLink">See how review works →</a></p>
+        </form>
+      </div>
+
+      <div class="col-lg-7">
+        <h2 class="h4 text-teal mb-1" data-i18n="voices.wall.title">What Cardiff is saying</h2>
+        <p class="text-muted mb-4" data-i18n="voices.wall.sub">Messages from donors, recipients, and partner businesses — approved by a real person before appearing here.</p>
+        <div class="row g-3" id="wall"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("voices.html");
+
+function renderAreaOptions() {
+  const areaSelect = document.getElementById("v-area");
+  const current = areaSelect.value;
+  areaSelect.innerHTML = `<option value="">${I18N.t("voices.form.areaNone")}</option>` +
+    CCM.CARDIFF_AREAS.map(a => `<option>${a}</option>`).join("");
+  if (current) areaSelect.value = current;
+}
+
+function renderWall() {
+  const wall = document.getElementById("wall");
+  const comments = CCM.approvedComments();
+  if (!comments.length) {
+    wall.innerHTML = `<p class="empty-state">${I18N.t("voices.wall.empty")}</p>`;
+    return;
+  }
+  wall.innerHTML = comments.map(c => {
+    const who = c.name ? c.name : I18N.t("voices.wall.anonymous");
+    const where = c.area ? `, ${c.area}` : "";
+    return `<div class="col-md-6 reveal"><div class="card lift h-100"><div class="card-body">
+      <p class="story-quote mb-3">${escapeHtml(c.message)}</p>
+      <p class="text-muted small mb-0 fw-bold">${escapeHtml(who)}${escapeHtml(where)} · ${CCM.fmtDate(c.createdAt)}</p>
+    </div></div></div>`;
+  }).join("");
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
+function renderAll() {
+  renderAreaOptions();
+  renderWall();
+  CCM.initScrollReveal();
+}
+
+renderAll();
+document.addEventListener("ccm:langchange", renderAll);
+
+document.getElementById("voice-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const message = document.getElementById("v-message").value.trim();
+  if (!message) return;
+  CCM.addComment({
+    name: document.getElementById("v-name").value.trim(),
+    area: document.getElementById("v-area").value,
+    message,
+  });
+  document.getElementById("success-banner").innerHTML = `
+    <div class="alert alert-success">${I18N.t("voices.form.success")}</div>`;
+  e.target.reset();
+  renderAreaOptions();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

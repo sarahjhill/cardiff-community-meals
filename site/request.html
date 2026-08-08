@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Help — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="request.title">Request or refer someone for meal support</h1>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="request.sub">This can be for yourself, or for someone you know — a family member, neighbour, or patient. In production every request is reviewed by an admin before it's made public; this demo approves instantly so you can see the full flow.</p>
+
+    <div id="success-banner" aria-live="polite"></div>
+
+    <form class="card p-4" style="max-width:640px;" id="request-form" novalidate>
+      <fieldset class="border rounded p-3 mb-3">
+        <legend class="float-none w-auto fs-6 fw-bold px-2" data-i18n="request.whoFor">Who is this for?</legend>
+        <div class="form-check"><input class="form-check-input" type="radio" name="referrerType" value="Self" id="ref-self" checked><label class="form-check-label" for="ref-self" data-i18n="request.self">Myself</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="referrerType" value="Family member" id="ref-family"><label class="form-check-label" for="ref-family" data-i18n="request.family">A family member</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="referrerType" value="Neighbour or friend" id="ref-neighbour"><label class="form-check-label" for="ref-neighbour" data-i18n="request.neighbour">A neighbour or friend</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="referrerType" value="Professional referral" id="ref-pro"><label class="form-check-label" for="ref-pro" data-i18n="request.professional">A professional referral (GP, hospital, social worker)</label></div>
+      </fieldset>
+
+      <div class="mb-3">
+        <label for="name" class="form-label fw-bold" data-i18n="request.name">Recipient's first name</label>
+        <div class="form-text mb-1" id="nameHint" data-i18n="request.nameHint">Only the first name is ever shown publicly — never a surname or exact address.</div>
+        <input type="text" class="form-control" id="name" required aria-describedby="nameHint" placeholder="e.g. Margaret">
+      </div>
+
+      <div class="mb-3">
+        <label for="area" class="form-label fw-bold" data-i18n="request.area">Cardiff area</label>
+        <select class="form-select" id="area" required></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="situation" class="form-label fw-bold" data-i18n="request.situation">Situation</label>
+        <select class="form-select" id="situation" required></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="dietary" class="form-label fw-bold" data-i18n="request.dietary">Dietary needs or allergies</label>
+        <div class="form-text mb-1" id="dietaryHint" data-i18n="request.dietaryHint">Optional, but helps partner businesses cook safely.</div>
+        <input type="text" class="form-control" id="dietary" aria-describedby="dietaryHint" placeholder="e.g. no nuts, halal, soft food">
+      </div>
+
+      <div class="mb-3">
+        <label for="mealsNeeded" class="form-label fw-bold" data-i18n="request.mealsNeeded">Meals needed</label>
+        <select class="form-select" id="mealsNeeded" required>
+          <option value="3" data-i18n="meals.3">3 meals (a few days)</option>
+          <option value="5" selected data-i18n="meals.5">5 meals (a working week)</option>
+          <option value="10" data-i18n="meals.10">10 meals (two weeks)</option>
+          <option value="20" data-i18n="meals.20">20 meals (a month)</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="urgency" class="form-label fw-bold" data-i18n="request.urgency">Urgency</label>
+        <select class="form-select" id="urgency" required>
+          <option data-i18n="urgency.urgent">Urgent — next 48 hours</option>
+          <option selected data-i18n="urgency.week">This week</option>
+          <option data-i18n="urgency.ongoing">Ongoing</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="address" class="form-label fw-bold" data-i18n="request.address">Delivery address</label>
+        <div class="form-text mb-1" id="addressHint" data-i18n="request.addressHint">Kept private — only shared with the business fulfilling the booking.</div>
+        <input type="text" class="form-control" id="address" required aria-describedby="addressHint" placeholder="Street address, postcode">
+      </div>
+
+      <div class="mb-3">
+        <label for="contact" class="form-label fw-bold" data-i18n="request.contact">Your contact email or phone</label>
+        <div class="form-text mb-1" id="contactHint" data-i18n="request.contactHint">So we can confirm the request and keep you updated.</div>
+        <input type="text" class="form-control" id="contact" required aria-describedby="contactHint" placeholder="you@example.com or 07…">
+      </div>
+
+      <div class="mb-3">
+        <label for="notes" class="form-label fw-bold" data-i18n="request.notes">Anything else it would help to know?</label>
+        <textarea class="form-control" id="notes" placeholder="Access notes, best delivery times, etc."></textarea>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="consent" required>
+        <label class="form-check-label" for="consent" data-i18n="request.consent">I confirm the recipient (or their representative) consents to this request and to their first name and area being shown publicly to enable donations.</label>
+      </div>
+
+      <button type="submit" class="btn btn-coral" data-i18n="request.submit">Submit request</button>
+
+      <div class="form-note mt-3" data-i18n="request.note">In a full production build, this step would trigger an admin safeguarding review — including a confirmation call for third-party referrals — before anything is published. Learn more on the How It Works page.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("request.html");
+
+function renderOptions() {
+  const areaSelect = document.getElementById("area");
+  areaSelect.innerHTML = CCM.CARDIFF_AREAS.map(a => `<option>${a}</option>`).join("");
+
+  const situationSelect = document.getElementById("situation");
+  situationSelect.innerHTML = CCM.SITUATIONS.map(s => `<option value="${s.value}">${I18N.t(s.key)}</option>`).join("");
+}
+renderOptions();
+document.addEventListener("ccm:langchange", renderOptions);
+
+document.getElementById("request-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const req = {
+    name: document.getElementById("name").value.trim(),
+    area: document.getElementById("area").value,
+    situation: document.getElementById("situation").value,
+    dietary: document.getElementById("dietary").value.trim() || "None specified",
+    mealsNeeded: Number(document.getElementById("mealsNeeded").value),
+    urgency: document.getElementById("urgency").value,
+    address: document.getElementById("address").value.trim(),
+    contact: document.getElementById("contact").value.trim(),
+    notes: document.getElementById("notes").value.trim(),
+    referrerType: document.querySelector('input[name="referrerType"]:checked').value,
+  };
+  const saved = CCM.addRequest(req);
+  document.getElementById("success-banner").innerHTML = `
+    <div class="alert alert-success">
+      <strong>${I18N.t("request.success")}</strong> ${I18N.t("track.recipient")}: <code>${saved.id}</code> —
+      "${saved.name}, ${saved.area}." <a href="donate.html" data-i18n="nav.donate">${I18N.t("nav.donate")}</a> ·
+      <a href="track.html" data-i18n="nav.track">${I18N.t("nav.track")}</a>
+    </div>`;
+  e.target.reset();
+  document.getElementById("mealsNeeded").value = "5";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

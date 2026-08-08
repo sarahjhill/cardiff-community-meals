@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Partners — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="biz.title">Our business partners</h1>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="biz.sub">Cardiff cafés, restaurants, and caterers who cook and deliver meals for the community — showcased here as thanks for their support.</p>
+    <div class="row g-4" id="biz-grid"></div>
+    <p class="mt-4"><span data-i18n="biz.joinPrompt">Run a Cardiff food business?</span> <a href="partner.html" data-i18n="biz.joinLink">Join as a partner →</a></p>
+  </div>
+</section>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <span class="eyebrow" style="color:#8a6300;">Cymru am byth</span>
+    <h2 class="fw-bold text-teal" data-i18n="biz.local.title">Proud to be Welsh: gift &amp; craft shops worth a visit</h2>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="biz.local.sub">A few independent Cardiff businesses selling Welsh gifts and crafts — not part of our meal network, just fellow local businesses worth celebrating.</p>
+    <div class="row g-4" id="shops-grid"></div>
+    <p class="text-muted small mt-4 mb-0" style="max-width:680px;" data-i18n="biz.local.disclaimer">These are independent local businesses, included here to celebrate Cardiff's Welsh character — they are not affiliated with, vetted by, or paid through Cardiff Community Meals.</p>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script src="shops-data.js"></script>
+<script>
+CCM.renderChrome("businesses.html");
+
+function render() {
+  const businesses = CCM.getBusinesses();
+  const donations = CCM.getDonations();
+  const grid = document.getElementById("biz-grid");
+
+  if (!businesses.length) {
+    grid.innerHTML = `<p class="empty-state">${I18N.t("biz.none")}</p>`;
+    return;
+  }
+
+  const withMeals = businesses.map(b => ({ ...b, meals: CCM.businessMealsDelivered(b.id, donations) }))
+    .sort((a, b) => b.meals - a.meals);
+
+  grid.innerHTML = withMeals.map(b => {
+    const tier = CCM.businessTier(b.meals);
+    return `<div class="col-md-4 reveal"><div class="card lift h-100"><div class="card-body">
+      <span class="badge ${tier.cls} mb-2">${I18N.t(tier.key)}</span>
+      <h2 class="h5 text-teal">${b.name}</h2>
+      <p class="card-text">${b.cuisine}</p>
+      <p class="stars mb-1">${"★".repeat(b.hygiene)}${"☆".repeat(5 - b.hygiene)} <span class="text-muted small">${I18N.t("biz.hygiene")}</span></p>
+      <p class="text-muted small">${I18N.t("biz.delivery")}: ${b.delivery}</p>
+      <p class="fw-bold mb-3" style="color:var(--brand-coral-deep);">${b.meals} ${I18N.t("biz.mealsDelivered")}</p>
+      <a class="btn btn-teal btn-sm" href="donate.html">${I18N.t("biz.bookFrom")}</a>
+    </div></div></div>`;
+  }).join("");
+  CCM.initScrollReveal();
+}
+
+function renderShops() {
+  const grid = document.getElementById("shops-grid");
+  grid.innerHTML = WELSH_SHOPS.map(s => `<div class="col-md-6 col-lg-3 reveal"><div class="card lift h-100"><div class="card-body d-flex flex-column">
+      <span class="badge badge-tier-bronze mb-2 align-self-start">${s.tag}</span>
+      <h3 class="h6 text-teal mb-1">${s.name}</h3>
+      <p class="text-muted small mb-2">${s.area} · ${s.address}</p>
+      <p class="card-text small flex-grow-1">${s.blurb}</p>
+      ${s.url ? `<a class="btn btn-outline-teal btn-sm mt-2 align-self-start" href="${s.url}" target="_blank" rel="noopener">${I18N.t("biz.local.visit")}</a>` : ""}
+    </div></div></div>`).join("");
+}
+
+function renderAll() {
+  render();
+  renderShops();
+  CCM.initScrollReveal();
+}
+
+renderAll();
+document.addEventListener("ccm:langchange", renderAll);
+</script>
+</body>
+</html>

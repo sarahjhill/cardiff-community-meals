@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Help Given — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="py-5">
+  <div class="container">
+    <h1 class="h2 fw-bold text-teal" data-i18n="track.title">Track help given</h1>
+    <p class="text-muted mb-4" style="max-width:720px;" data-i18n="track.sub">Every request and its bookings, from submission through to delivery. In production, status updates here come from the business partner's own portal — for this demo, use "Advance status" to simulate a business moving a booking along.</p>
+    <div class="table-responsive">
+      <table class="table table-striped bg-white align-middle" id="track-table">
+        <caption class="visually-hidden" data-i18n="track.title">Track help given</caption>
+        <thead class="table-light">
+          <tr>
+            <th scope="col" data-i18n="track.recipient">Recipient</th>
+            <th scope="col" data-i18n="track.area">Area</th>
+            <th scope="col" data-i18n="track.meals">Meals</th>
+            <th scope="col" data-i18n="track.status">Status</th>
+            <th scope="col" data-i18n="track.bookedBy">Booked by</th>
+            <th scope="col" data-i18n="track.business">Business</th>
+            <th scope="col" data-i18n="track.requested">Requested</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="track-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("track.html");
+
+const donationBadgeClass = { booked: "bg-warning-subtle text-warning-emphasis", prepared: "bg-info-subtle text-info-emphasis", delivered: "bg-success-subtle text-success-emphasis" };
+
+function render() {
+  const requests = CCM.getRequests();
+  const donations = CCM.getDonations();
+  const businesses = CCM.getBusinesses();
+  const body = document.getElementById("track-body");
+
+  if (!requests.length) {
+    body.innerHTML = `<tr><td colspan="8" class="empty-state">${I18N.t("track.noRequests")}</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = requests.map(r => {
+    const linked = donations.filter(d => d.requestId === r.id);
+    if (!linked.length) {
+      return `<tr>
+        <td>${r.name}</td><td>${r.area}</td><td>0 / ${r.mealsNeeded}</td>
+        <td><span class="badge bg-danger-subtle text-danger-emphasis">${I18N.t("status.open")}</span></td>
+        <td>—</td><td>—</td><td>${CCM.fmtDate(r.createdAt)}</td><td></td>
+      </tr>`;
+    }
+    return linked.map((d, i) => {
+      const biz = businesses.find(b => b.id === d.businessId);
+      const nextLabel = { booked: I18N.t("track.markPrepared"), prepared: I18N.t("track.markDelivered"), delivered: I18N.t("track.delivered") }[d.status];
+      const canAdvance = d.status !== "delivered";
+      return `<tr>
+        <td>${i === 0 ? r.name : ""}</td>
+        <td>${i === 0 ? r.area : ""}</td>
+        <td>${d.mealCount} / ${r.mealsNeeded}</td>
+        <td><span class="badge ${donationBadgeClass[d.status]}">${I18N.t("status." + d.status)}</span></td>
+        <td>${d.donorName}</td>
+        <td>${biz ? biz.name : I18N.t("track.unassigned")}</td>
+        <td>${CCM.fmtDate(r.createdAt)}</td>
+        <td>${canAdvance ? `<button class="btn btn-outline-secondary btn-sm" onclick="advance('${d.id}')">${nextLabel}</button>` : `<span class="text-success small">${I18N.t("track.complete")}</span>`}</td>
+      </tr>`;
+    }).join("");
+  }).join("");
+}
+
+function advance(donationId) {
+  CCM.advanceDonationStatus(donationId);
+  render();
+}
+
+render();
+document.addEventListener("ccm:langchange", render);
+</script>
+</body>
+</html>

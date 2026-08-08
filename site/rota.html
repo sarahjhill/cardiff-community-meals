@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cook & Book — Cardiff Community Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="hero-gradient text-white py-5">
+  <div class="hero-texture"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-skyline"></div>
+  <div class="container py-4">
+    <span class="eyebrow" style="color:#ffd77a;" data-i18n="nav.rota">Cook & Book</span>
+    <h1 class="display-6 fw-bold" style="max-width:740px;" data-i18n="rota.hero.title">Cook & Book — private rotas for people you know</h1>
+    <p class="lead" style="max-width:700px;color:#dcece5;" data-i18n="rota.hero.lead">Organise a private cooking rota for someone in your life — a new baby, a bereavement, surgery, or anything else where a group of friends want to take turns cooking. Unlike the public Donate &amp; Book page, this space is invite-only: only people you share the link and code with can see it.</p>
+  </div>
+</section>
+
+<section class="py-5" id="pathSection">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6 reveal">
+        <div class="card lift h-100"><div class="card-body p-4">
+          <h2 class="h5 text-teal" data-i18n="rota.start.title">Start a rota</h2>
+          <p class="card-text" data-i18n="rota.start.body">Set up a private page for someone you know, then invite the people you trust to sign up for dates.</p>
+          <button class="btn btn-coral" id="showCreateBtn" data-i18n="rota.start.cta">Create a rota</button>
+        </div></div>
+      </div>
+      <div class="col-md-6 reveal">
+        <div class="card lift h-100"><div class="card-body p-4">
+          <h2 class="h5 text-teal" data-i18n="rota.join.title">Join a rota</h2>
+          <p class="card-text" data-i18n="rota.join.body">Have a link and access code from someone who invited you? Jump straight to their rota.</p>
+          <form id="join-form" class="mt-3">
+            <div class="mb-2">
+              <label for="joinLink" class="form-label fw-bold small" data-i18n="rota.join.linkLabel">Rota link or ID</label>
+              <input type="text" class="form-control" id="joinLink" required placeholder="rota_ab12cd3 or full link">
+            </div>
+            <div class="mb-3">
+              <label for="joinCode" class="form-label fw-bold small" data-i18n="rota.join.codeLabel">Access code</label>
+              <input type="text" class="form-control text-uppercase" id="joinCode" required maxlength="6" placeholder="ABC123">
+            </div>
+            <div id="join-error" class="text-danger small mb-2" style="display:none;" data-i18n="rota.join.error"></div>
+            <button type="submit" class="btn btn-teal" data-i18n="rota.join.cta">Go to rota</button>
+          </form>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-white" id="createSection" style="display:none;">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="rota.form.title">Set up your private rota</h2>
+    <form class="card p-4" style="max-width:640px;" id="rota-form">
+      <div class="mb-3">
+        <label for="recipientName" class="form-label fw-bold" data-i18n="rota.form.recipientName">Who is this rota for?</label>
+        <div class="form-text mb-1" id="recipientHint" data-i18n="rota.form.recipientNameHint">This is only ever seen by people you invite — a first name, nickname, or "The Jones family" all work.</div>
+        <input type="text" class="form-control" id="recipientName" required aria-describedby="recipientHint" placeholder="e.g. Ffion &amp; the new baby">
+      </div>
+
+      <div class="mb-3">
+        <label for="occasion" class="form-label fw-bold" data-i18n="rota.form.occasion">Occasion</label>
+        <select class="form-select" id="occasion" required></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="story" class="form-label fw-bold" data-i18n="rota.form.story">Tell the group why they're needed</label>
+        <div class="form-text mb-1" id="storyHint" data-i18n="rota.form.storyHint">This is the "showcase" your group will see first — a few sentences is plenty.</div>
+        <textarea class="form-control" id="story" required aria-describedby="storyHint" rows="4" placeholder="e.g. Ffion had a c-section and is at home with a newborn and a toddler..."></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="dietary" class="form-label fw-bold" data-i18n="rota.form.dietary">Dietary needs or allergies</label>
+        <input type="text" class="form-control" id="dietary" placeholder="e.g. vegetarian, no shellfish">
+      </div>
+
+      <div class="mb-3">
+        <label for="address" class="form-label fw-bold" data-i18n="rota.form.address">Delivery address</label>
+        <div class="form-text mb-1" id="addressHint" data-i18n="rota.form.addressHint">Only visible to people who sign up for a date.</div>
+        <input type="text" class="form-control" id="address" required aria-describedby="addressHint" placeholder="Street address, postcode">
+      </div>
+
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label for="startDate" class="form-label fw-bold" data-i18n="rota.form.startDate">First day of the rota</label>
+          <input type="date" class="form-control" id="startDate" required>
+        </div>
+        <div class="col-sm-6">
+          <label for="duration" class="form-label fw-bold" data-i18n="rota.form.duration">How long should the rota run?</label>
+          <select class="form-select" id="duration" required>
+            <option value="7" data-i18n="rota.form.duration.1">1 week</option>
+            <option value="14" selected data-i18n="rota.form.duration.2">2 weeks</option>
+            <option value="28" data-i18n="rota.form.duration.4">4 weeks</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-0">
+        <div class="col-sm-6">
+          <label for="organizerName" class="form-label fw-bold" data-i18n="rota.form.organizerName">Your name (organiser)</label>
+          <input type="text" class="form-control" id="organizerName" required>
+        </div>
+        <div class="col-sm-6">
+          <label for="organizerEmail" class="form-label fw-bold" data-i18n="rota.form.organizerEmail">Your email</label>
+          <input type="email" class="form-control" id="organizerEmail" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-coral mt-4" data-i18n="rota.form.submit">Create private rota</button>
+    </form>
+  </div>
+</section>
+
+<section class="py-5 bg-white" id="successSection" style="display:none;">
+  <div class="container">
+    <div class="card p-4 p-lg-5" style="max-width:680px;">
+      <h2 class="fw-bold text-teal" data-i18n="rota.success.title">Your private rota is ready</h2>
+      <p class="text-muted" data-i18n="rota.success.body">Share the link and code below with the people you want cooking — only they'll be able to see or sign up.</p>
+
+      <label class="form-label fw-bold small" data-i18n="rota.success.linkLabel">Private link</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="rotaLinkOut" readonly>
+        <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn" data-i18n="rota.success.copy">Copy</button>
+      </div>
+
+      <label class="form-label fw-bold small" data-i18n="rota.success.codeLabel">Access code</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control fw-bold" id="rotaCodeOut" readonly style="letter-spacing:.15em;">
+        <button class="btn btn-outline-secondary" type="button" id="copyCodeBtn" data-i18n="rota.success.copy">Copy</button>
+      </div>
+
+      <p class="form-note" data-i18n="rota.success.note">Anyone with both the link and the code can view and sign up — only share it with people you know and trust.</p>
+
+      <p class="fw-bold mb-2 mt-3" data-i18n="rota.success.share">Share with your group</p>
+      <div class="d-flex flex-wrap gap-2 mb-4">
+        <button class="btn btn-teal" id="webShareBtn" style="display:none;">
+          <span data-i18n="rota.success.share">Share with your group</span>
+        </button>
+        <a class="btn btn-outline-secondary" id="whatsappShareBtn" target="_blank" rel="noopener">
+          <span data-i18n="rota.success.shareWhatsapp">WhatsApp</span>
+        </a>
+        <a class="btn btn-outline-secondary" id="emailShareBtn">
+          <span data-i18n="rota.success.shareEmail">Email</span>
+        </a>
+      </div>
+
+      <a class="btn btn-coral btn-lg" id="goToRotaBtn" data-i18n="rota.success.goToRota">Open your rota</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+CCM.renderChrome("rota.html");
+
+function renderOccasions() {
+  document.getElementById("occasion").innerHTML = CCM.ROTA_OCCASIONS
+    .map(o => `<option value="${o.value}">${I18N.t(o.key)}</option>`).join("");
+}
+renderOccasions();
+document.addEventListener("ccm:langchange", renderOccasions);
+
+document.getElementById("showCreateBtn").addEventListener("click", () => {
+  document.getElementById("createSection").style.display = "block";
+  document.getElementById("createSection").scrollIntoView({ behavior: "smooth" });
+});
+
+document.getElementById("rota-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const rota = {
+    recipientName: document.getElementById("recipientName").value.trim(),
+    occasion: document.getElementById("occasion").value,
+    story: document.getElementById("story").value.trim(),
+    dietary: document.getElementById("dietary").value.trim() || "None specified",
+    address: document.getElementById("address").value.trim(),
+    startDate: document.getElementById("startDate").value,
+    days: Number(document.getElementById("duration").value),
+    organizerName: document.getElementById("organizerName").value.trim(),
+    organizerEmail: document.getElementById("organizerEmail").value.trim(),
+  };
+  const saved = CCM.addRota(rota);
+  showSuccess(saved);
+});
+
+function showSuccess(rota) {
+  document.getElementById("pathSection").style.display = "none";
+  document.getElementById("createSection").style.display = "none";
+  const successSection = document.getElementById("successSection");
+  successSection.style.display = "block";
+
+  const link = window.location.href.replace(/rota\.html.*$/, "") + `rota-view.html?id=${rota.id}`;
+  document.getElementById("rotaLinkOut").value = link;
+  document.getElementById("rotaCodeOut").value = rota.accessCode;
+  document.getElementById("goToRotaBtn").href = `rota-view.html?id=${rota.id}&code=${rota.accessCode}`;
+
+  const shareText = `You're invited to join a private cooking rota for ${rota.recipientName} on Cardiff Community Meals.\n\nLink: ${link}\nAccess code: ${rota.accessCode}`;
+
+  document.getElementById("whatsappShareBtn").href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+  document.getElementById("emailShareBtn").href = `mailto:?subject=${encodeURIComponent("Cooking rota for " + rota.recipientName)}&body=${encodeURIComponent(shareText)}`;
+
+  if (navigator.share) {
+    const webShareBtn = document.getElementById("webShareBtn");
+    webShareBtn.style.display = "inline-block";
+    webShareBtn.addEventListener("click", () => {
+      navigator.share({ title: "Cooking rota for " + rota.recipientName, text: shareText, url: link }).catch(() => {});
+    });
+  }
+
+  document.getElementById("copyLinkBtn").addEventListener("click", () => copyField("rotaLinkOut", "copyLinkBtn"));
+  document.getElementById("copyCodeBtn").addEventListener("click", () => copyField("rotaCodeOut", "copyCodeBtn"));
+
+  successSection.scrollIntoView({ behavior: "smooth" });
+}
+
+function copyField(inputId, btnId) {
+  const input = document.getElementById(inputId);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  const restore = () => { btn.textContent = I18N.t("rota.success.copy"); };
+  const btn = document.getElementById(btnId);
+  const done = () => {
+    btn.textContent = I18N.t("rota.success.copied");
+    setTimeout(restore, 1500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(input.value).then(done).catch(() => { document.execCommand("copy"); done(); });
+  } else {
+    document.execCommand("copy");
+    done();
+  }
+}
+
+document.getElementById("join-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const raw = document.getElementById("joinLink").value.trim();
+  const code = document.getElementById("joinCode").value.trim();
+  const idMatch = raw.match(/rota_[a-z0-9]+/i);
+  const id = idMatch ? idMatch[0] : raw;
+  const rota = CCM.findRota(id);
+  const errorEl = document.getElementById("join-error");
+  if (!rota) {
+    errorEl.style.display = "block";
+    return;
+  }
+  errorEl.style.display = "none";
+  window.location.href = `rota-view.html?id=${id}&code=${encodeURIComponent(code)}`;
+});
+
+document.getElementById("startDate").min = new Date().toISOString().slice(0, 10);
+document.getElementById("startDate").value = new Date().toISOString().slice(0, 10);
+</script>
+</body>
+</html>

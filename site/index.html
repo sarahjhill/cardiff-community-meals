@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiff Community Meals — a cwtch, delivered with dinner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="custom.css">
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to main content</a>
+<header id="site-header"></header>
+
+<main id="main">
+<section class="hero-gradient text-white py-5">
+  <div class="hero-texture"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-skyline"></div>
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="pride-badge"><span>Caerdydd</span><span class="divider">·</span><span>Cardiff</span><span class="divider">·</span><span>Cymru first</span></span>
+        <h1 class="display-6 fw-bold" style="max-width:640px;" data-i18n="home.hero.title">Cardiff looks after its own.</h1>
+        <p class="lead" style="max-width:560px;color:#dcece5;" data-i18n="home.hero.lead">Friendly, proud, and famously welcoming — this is Cardiff doing what it does best.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a class="btn btn-coral btn-lg" href="request.html" data-i18n="home.hero.ctaRequest">Request help for someone</a>
+          <a class="btn btn-outline-cream btn-lg" href="donate.html" data-i18n="home.hero.ctaDonate">Donate &amp; book a meal</a>
+          <a class="btn btn-outline-cream btn-lg" href="partner.html" data-i18n="home.hero.ctaPartner">Partner your business</a>
+        </div>
+        <p class="hero-areas-strip mt-4 mb-0" id="hero-areas"></p>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-stat-card reveal">
+          <div class="d-flex align-items-center mb-3">
+            <span class="hero-live-dot" aria-hidden="true"></span>
+            <span class="small fw-bold text-uppercase" style="letter-spacing:.06em;" data-i18n="home.hero.live">Live right now</span>
+          </div>
+          <div class="row g-3" id="hero-stats"></div>
+          <p class="small mb-0 mt-3" style="color:rgba(255,255,255,.72);" data-i18n="home.hero.liveNote">These numbers update as requests, donations and deliveries happen — see them all below.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="home.stats.title">Cardiff, right now</h2>
+    <p class="text-muted mb-4" style="max-width:640px;" data-i18n="home.stats.sub">Live totals from this platform. Every number below updates as requests, donations, and deliveries happen.</p>
+    <div class="row g-3 reveal" id="stats-grid"></div>
+  </div>
+</section>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="home.how.title">How it works</h2>
+    <p class="text-muted mb-4" style="max-width:640px;" data-i18n="home.how.sub">Three simple steps, with a verification check built in at every stage to protect the people we're helping.</p>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="card lift h-100"><div class="card-body">
+          <div class="step-num">1</div>
+          <h3 class="h5 text-teal" data-i18n="home.how.step1.title">Request or refer</h3>
+          <p class="card-text" data-i18n="home.how.step1.body">Anyone can request help for themselves, or refer a family member, neighbour, or patient. Every request is checked before it's made public — no one is listed without consent.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card lift h-100"><div class="card-body">
+          <div class="step-num">2</div>
+          <h3 class="h5 text-teal" data-i18n="home.how.step2.title">Donate &amp; book</h3>
+          <p class="card-text" data-i18n="home.how.step2.body">Community members browse open requests, choose how many meals to fund, and pick (or let us match) a local business to cook them.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card lift h-100"><div class="card-body">
+          <div class="step-num">3</div>
+          <h3 class="h5 text-teal" data-i18n="home.how.step3.title">Cook, deliver, track</h3>
+          <p class="card-text" data-i18n="home.how.step3.body">The business prepares and delivers the meal. Every step is tracked, right through to confirmed delivery — for the donor, the recipient, and the platform's public impact record.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="home.benefits.title">Good for Cardiff, not just for one dinner</h2>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="home.benefits.sub">Every meal ripples outward — here's what it means for the city, not just the person eating it.</p>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="card benefit-card h-100"><div class="card-body">
+          <svg class="benefit-icon" viewBox="0 0 130 90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(5,10)" stroke="#a3273c" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 60 h100 a2 2 0 0 1 2 2 v6 a26 26 0 0 1 -26 26 h-52 a26 26 0 0 1 -26 -26 v-6 a2 2 0 0 1 2 -2 z"/>
+              <path d="M4 60 h114"/>
+              <path d="M2 60 q0 -12 12 -12"/>
+              <path d="M118 60 q0 -12 -12 -12"/>
+              <path d="M45 40 q-6 -9 0 -18"/>
+              <path d="M75 40 q-6 -9 0 -18"/>
+            </g>
+          </svg>
+          <h3 class="h5 text-teal" data-i18n="home.benefits.kitchens.title">Local kitchens get the work</h3>
+          <p class="card-text" data-i18n="home.benefits.kitchens.body">Every booking is money straight into a Cardiff kitchen, not a national chain — keeping local jobs and local flavour alive.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card benefit-card h-100"><div class="card-body">
+          <svg class="benefit-icon" viewBox="0 0 130 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(5,5)" stroke="#a3273c" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 46 L60 6 L116 46"/>
+              <path d="M18 40 v54 h84 v-54"/>
+              <path d="M60 62 c-8 -8 -22 -3 -22 8 c0 10 12 16 22 24 c10 -8 22 -14 22 -24 c0 -11 -14 -16 -22 -8z" fill="#a3273c" stroke="none"/>
+            </g>
+          </svg>
+          <h3 class="h5 text-teal" data-i18n="home.benefits.neighbours.title">Neighbours stay neighbours</h3>
+          <p class="card-text" data-i18n="home.benefits.neighbours.body">A meal is often the reason someone knocks on a door, has a proper conversation, or feels less alone that week.</p>
+        </div></div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card benefit-card h-100"><div class="card-body">
+          <svg class="benefit-icon" viewBox="0 0 90 90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(5,4)" fill="#a3273c" stroke="none">
+              <path d="M40 4 C24 22 14 32 14 48 a26 26 0 0 0 52 0 c0 -9 -4 -15 -9 -20 c1 8 -3 11 -6 8 c-4 -4 0 -13 -5 -24 c-3 9 -8 11 -6 19 c1 5 -3 6 -6 3 c-3 -3 -1 -9 0 -14 c1 -6 3 -10 6 -14 c-3 1 -5 2 -6 3 c-2 -2 -3 -5 0 -9z"/>
+            </g>
+          </svg>
+          <h3 class="h5 text-teal" data-i18n="home.benefits.habit.title">An old habit, kept alive</h3>
+          <p class="card-text" data-i18n="home.benefits.habit.body">Looking after the person down the street is a very Cardiff, very Welsh instinct. This just makes it easier to act on.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <span class="eyebrow" data-i18n="nav.stories">Stories</span>
+    <h2 class="fw-bold text-teal" data-i18n="home.stories.title">The people behind the numbers</h2>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="home.stories.sub">Every statistic on this site is a real person waiting for a meal. Here are three of their stories.</p>
+    <div class="row g-4" id="stories-teaser"></div>
+    <p class="mt-4"><a href="stories.html" data-i18n="home.stories.viewAll">Read all our stories →</a></p>
+  </div>
+</section>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="home.voices.title">What Cardiff is saying</h2>
+    <p class="text-muted mb-4" style="max-width:680px;" data-i18n="home.voices.sub">Real messages from the people using this platform — read all of them, or leave your own.</p>
+    <div class="row g-4" id="voices-preview"></div>
+    <p class="mt-4"><a href="voices.html" data-i18n="home.voices.viewAll">Read &amp; leave a message →</a></p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold text-teal" data-i18n="home.biz.title">Featured business partners</h2>
+    <p class="text-muted mb-4" data-i18n="home.biz.sub">Local Cardiff kitchens who cook and deliver meals for the community.</p>
+    <div class="row g-4" id="biz-preview"></div>
+    <p class="mt-4"><a href="businesses.html" data-i18n="home.biz.viewAll">See all business partners →</a></p>
+  </div>
+</section>
+</main>
+
+<footer id="site-footer" class="bg-teal-dark"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script src="stories-data.js"></script>
+<script>
+CCM.renderChrome("index.html");
+
+function renderStats() {
+  const s = CCM.impactStats();
+  document.getElementById("stats-grid").innerHTML = `
+    <div class="col-6 col-md-3"><div class="card text-center h-100"><div class="card-body">
+      <div class="stat-num">${s.mealsDelivered}</div><div class="text-muted small">${I18N.t("stat.meals")}</div>
+    </div></div></div>
+    <div class="col-6 col-md-3"><div class="card text-center h-100"><div class="card-body">
+      <div class="stat-num">${CCM.fmtGBP(s.totalRaised)}</div><div class="text-muted small">${I18N.t("stat.raised")}</div>
+    </div></div></div>
+    <div class="col-6 col-md-3"><div class="card text-center h-100"><div class="card-body">
+      <div class="stat-num">${s.openRequests}</div><div class="text-muted small">${I18N.t("stat.open")}</div>
+    </div></div></div>
+    <div class="col-6 col-md-3"><div class="card text-center h-100"><div class="card-body">
+      <div class="stat-num">${s.peopleHelped}</div><div class="text-muted small">${I18N.t("stat.people")}</div>
+    </div></div></div>
+  `;
+}
+
+function renderHeroStats() {
+  const s = CCM.impactStats();
+  document.getElementById("hero-stats").innerHTML = `
+    <div class="col-6"><div class="stat-num">${s.mealsDelivered}</div><div class="hero-stat-label">${I18N.t("stat.meals")}</div></div>
+    <div class="col-6"><div class="stat-num">${CCM.fmtGBP(s.totalRaised)}</div><div class="hero-stat-label">${I18N.t("stat.raised")}</div></div>
+    <div class="col-6"><div class="stat-num">${s.openRequests}</div><div class="hero-stat-label">${I18N.t("stat.open")}</div></div>
+    <div class="col-6"><div class="stat-num">${s.peopleHelped}</div><div class="hero-stat-label">${I18N.t("stat.people")}</div></div>
+  `;
+  document.getElementById("hero-areas").innerHTML = CCM.CARDIFF_AREAS.slice(0, 8).join(" &middot; ") + " &middot; &hellip;";
+}
+
+function renderStoriesTeaser() {
+  document.getElementById("stories-teaser").innerHTML = STORIES.map(s => {
+    const t = ccmStory(s);
+    return `<div class="col-md-4 reveal"><a href="stories.html#${s.id}" class="card lift story-card h-100 text-decoration-none text-dark"><div class="card-body">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div class="story-avatar" style="background-color:${s.color};">${s.initial}</div>
+        <div>
+          <h3 class="h6 mb-0 text-teal">${s.name}, ${s.area}</h3>
+          <span class="text-muted small">${t.situation}</span>
+        </div>
+      </div>
+      <p class="card-text">${t.teaser}</p>
+      <span class="fw-bold" style="color:var(--brand-coral-deep);">${I18N.t("home.stories.readMore")} →</span>
+    </div></a></div>`;
+  }).join("");
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
+function renderVoicesPreview() {
+  const comments = CCM.approvedComments().slice(0, 3);
+  const wrap = document.getElementById("voices-preview");
+  if (!comments.length) {
+    wrap.innerHTML = `<p class="empty-state">${I18N.t("voices.wall.empty")}</p>`;
+    return;
+  }
+  wrap.innerHTML = comments.map(c => {
+    const who = c.name ? c.name : I18N.t("voices.wall.anonymous");
+    const where = c.area ? `, ${c.area}` : "";
+    return `<div class="col-md-4 reveal"><div class="card lift h-100"><div class="card-body">
+      <p class="story-quote mb-3">${escapeHtml(c.message)}</p>
+      <p class="text-muted small mb-0 fw-bold">${escapeHtml(who)}${escapeHtml(where)}</p>
+    </div></div></div>`;
+  }).join("");
+}
+
+function renderBizPreview() {
+  const businesses = CCM.getBusinesses();
+  const donations = CCM.getDonations();
+  const top = businesses
+    .map(b => ({ ...b, meals: CCM.businessMealsDelivered(b.id, donations) }))
+    .sort((a, b) => b.meals - a.meals)
+    .slice(0, 3);
+  document.getElementById("biz-preview").innerHTML = top.map(b => {
+    const tier = CCM.businessTier(b.meals);
+    return `<div class="col-md-4 reveal"><div class="card lift h-100"><div class="card-body">
+      <span class="badge ${tier.cls} mb-2">${I18N.t(tier.key)}</span>
+      <h3 class="h5 text-teal">${b.name}</h3>
+      <p class="card-text">${b.cuisine}</p>
+      <p class="fw-bold" style="color:var(--brand-coral-deep);">${b.meals} ${I18N.t("biz.mealsDelivered")}</p>
+    </div></div></div>`;
+  }).join("") || `<p class="empty-state">${I18N.t("biz.none")}</p>`;
+}
+
+function renderAll() {
+  renderStats();
+  renderHeroStats();
+  renderStoriesTeaser();
+  renderVoicesPreview();
+  renderBizPreview();
+  CCM.initScrollReveal();
+}
+
+renderAll();
+document.addEventListener("ccm:langchange", renderAll);
+</script>
+</body>
+</html>
