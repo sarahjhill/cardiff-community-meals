@@ -465,8 +465,8 @@ const CCM = (() => {
             </a>
             <div class="d-flex align-items-center order-xl-last">
               <div class="lang-toggle" role="group" aria-label="Language / Iaith">
-                <button type="button" class="lang-btn" data-lang="en" title="English" aria-label="English" onclick="I18N.setLang('en')">${flagUkSvg}</button>
                 <button type="button" class="lang-btn" data-lang="cy" title="Cymraeg" aria-label="Cymraeg" onclick="I18N.setLang('cy')">${flagCySvg}</button>
+                <button type="button" class="lang-btn" data-lang="en" title="English" aria-label="English" onclick="I18N.setLang('en')">${flagUkSvg}</button>
               </div>
               <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
