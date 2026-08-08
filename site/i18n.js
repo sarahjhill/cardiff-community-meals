@@ -29,6 +29,7 @@ const I18N = (() => {
       "brand.tagline": "a cwtch, delivered with dinner",
 
       "footer.moderate": "Moderation queue (demo)",
+      "footer.rights": "All rights reserved.",
 
       "home.voices.title": "What Cardiff is saying",
       "home.voices.sub": "Real messages from the people using this platform — read all of them, or leave your own.",
@@ -370,6 +371,7 @@ const I18N = (() => {
       "brand.tagline": "cwtch a swper, wrth y drws",
 
       "footer.moderate": "Ciw cymedroli (demo)",
+      "footer.rights": "Cedwir pob hawl.",
 
       "home.voices.title": "Beth mae Caerdydd yn ei ddweud",
       "home.voices.sub": "Negeseuon go iawn gan y bobl sy'n defnyddio'r platfform hwn — darllenwch bob un, neu gadewch eich un chi.",

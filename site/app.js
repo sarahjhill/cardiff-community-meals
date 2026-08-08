@@ -512,6 +512,11 @@ const CCM = (() => {
             <a href="moderate.html" class="d-block small text-white-50" data-i18n="footer.moderate">Moderation queue (demo)</a>
             <a href="mailto:hello@cardiffcommunitymeals.example">hello@cardiffcommunitymeals.example</a>
           </div>
+        </div>
+        <div class="footer-legal py-3">
+          <div class="container">
+            &copy; ${new Date().getFullYear()} Sarah Hill (SJ Development). <span data-i18n="footer.rights">All rights reserved.</span>
+          </div>
         </div>`;
     }
     injectHeroSkyline();

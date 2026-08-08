@@ -44,3 +44,7 @@ Then visit `http://localhost:8000`.
 This repo publishes to GitHub Pages automatically via `.github/workflows/deploy.yml` — every push to `main` builds and deploys the contents of `site/`.
 
 One-time setup after your first push: in the repo on GitHub, go to **Settings → Pages** and set **Source** to **GitHub Actions**. After the workflow run finishes, the site will be live at `https://<username>.github.io/<repo-name>/`.
+
+## License
+
+Copyright © 2026 Sarah Hill (SJ Development). All rights reserved. See [`LICENSE`](./LICENSE) — this is proprietary, all-rights-reserved code, not open source; no part of it may be copied, modified, or reused without written permission.

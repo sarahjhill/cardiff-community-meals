@@ -422,6 +422,12 @@ textarea:focus-visible,
 
 footer a { color: #fff; }
 footer { background-color: var(--brand-teal-dark); color: #bcd8c6; }
+.footer-legal {
+  background-color: rgba(0,0,0,0.18);
+  color: #9cc2ab;
+  font-size: .8rem;
+  text-align: center;
+}
 
 /* ---------- Cook & Book: rota + chat ---------- */
 .rota-day {
