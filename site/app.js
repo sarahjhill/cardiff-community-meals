@@ -460,7 +460,7 @@ const CCM = (() => {
               ${logoSvg}
               <span class="d-flex flex-column lh-sm">
                 <span class="fw-bold fs-5">Cardiff Community Meals</span>
-                <small class="text-white-50" data-i18n="brand.tagline" style="font-size:.72rem;">a meal, delivered with care</small>
+                <small class="text-white-50" data-i18n="brand.tagline" style="font-size:.72rem;">a cwtch, delivered with dinner</small>
               </span>
             </a>
             <div class="d-flex align-items-center order-xl-last">
@@ -503,7 +503,7 @@ const CCM = (() => {
         <div class="container py-4 d-flex flex-wrap justify-content-between gap-4">
           <div>
             <strong class="text-white d-flex align-items-center gap-2 mb-1">${daffodilSvg} Cardiff Community Meals</strong>
-            <span data-i18n="footer.about">A community pilot serving Cardiff, Wales.</span><br>
+            <span data-i18n="footer.about">A community pilot serving Cardiff, Wales — Welsh first, and proud to feed absolutely everyone.</span><br>
             <span data-i18n="footer.demo">This is a working prototype — donations and payments are simulated.</span>
           </div>
           <div>
